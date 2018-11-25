@@ -1,7 +1,10 @@
 class Game {
-  constructor(missed){
-    this.missed = missed;
+  constructor(){
+    this.missed = 0;
     this.phrases = [
+        //below are a handful of phrases from one of my favorite TV shows,
+        //Arrested Development. Disclaimer: even though I loved the show,
+        //the last season was dissapointingly terrible
      "solid as a rock",
      "mister manager",
      "for british eyes only",
@@ -9,8 +12,6 @@ class Game {
      "girl michael",
      "bob loblaw law blog",
      "and the bushes stand for bushes",
-     "analrapist",
-     "anyong",
      "go see a star war",
      "hot ham water",
      "look at what the homosexuals have done to me",
@@ -18,7 +19,6 @@ class Game {
      "has anyone in this family even seen a chicken",
      "steve holt",
      "i love all my children equally",
-     "nevernude",
      "my father is my uncle",
      "army had a half day",
      "marry me",
@@ -26,9 +26,7 @@ class Game {
      "i just blue myself",
      "burn bush",
      "maritime law",
-     "anustart",
      "i sunk the yacht",
-     "brothero",
      "i made a huge mistake"
    ];
   }
@@ -38,45 +36,48 @@ class Game {
     return this.phrases[ix];
   }
 
+
+
   startGame(){
     const pickedPhrase = this.getRandomPhrase();
     const thisPhrase = new Phrase(pickedPhrase);
     thisPhrase.addPhraseToDisplay();
   }
 
+
   checkForWin(){
     const letters = document.getElementById('phrase').firstElementChild.children;
-    let allDone = false;
     for(let i = 0; i < letters.length; i++){
-      if(letters[i].classList.contains('letter'){
-        if(letters[i].classList.contains('show'))
-        //looped myself into a hole ughh resume from here tomorrow
+      if(letters[i].classList.contains('hide letter')){
+        return false;
       }
     }
+    return true;
   }
 
   handleInteraction(clickedLetter){
     if(this.phrase.checkLetter(clickedLetter)){
-      this.phrase.showMatchedLetter(clickedLetter);
-      this.checkForWin();
+        this.phrase.showMatchedLetter(clickedLetter);
+        this.phrase.checkForWin();
     } else {
-      this.removeLife();
+        this.removeLife();
     }
 
   }
-
-
 
   removeLife(){
     ++this.missed;
     const ol = document.getElementById('scoreboard').firstElementChild;
-    ol.removeChild(ol.childNodes[0]);
+    ol.removeChild(ol.lastChild);
+    //remove last child?
     if(ul.hasChildNodes() === false) {
       this.gameOver();
     }
   }
-
+/*
   gameOver(){
 
   }
+  */
+
 }
