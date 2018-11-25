@@ -9,11 +9,11 @@ let newGame;
 
 startButton.addEventListener('click', function(e){
   resetDisplay();
-  newGame = new Game(0);
+  newGame = new Game();
   newGame.startGame();
 });
 
-//have to rework markButton because i removed pickedPhrase
+
 const markButton = (e) => {
   const clickedLetter = e.target.innerText;
   e.target.disabled = true;
