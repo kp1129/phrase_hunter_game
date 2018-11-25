@@ -1,29 +1,25 @@
+// Create a placeholder for an instance of Phrase for later
+let thisPhrase;
+
 class Game {
   constructor(){
     this.missed = 0;
     this.phrases = [
-        //below are a handful of phrases from one of my favorite TV shows,
-        //Arrested Development. Disclaimer: even though I loved the show,
-        //the last season was dissapointingly terrible
+        // Below are a handful of phrases from one of my favorite TV shows,
+        // Arrested Development.
      "solid as a rock",
      "mister manager",
      "for british eyes only",
      "sudden valley",
      "girl michael",
      "bob loblaw law blog",
-     "and the bushes stand for bushes",
      "go see a star war",
      "hot ham water",
-     "look at what the homosexuals have done to me",
-     "why should you go to jail for a crime someone else noticed",
-     "has anyone in this family even seen a chicken",
      "steve holt",
-     "i love all my children equally",
      "my father is my uncle",
      "army had a half day",
      "marry me",
      "no touching",
-     "i just blue myself",
      "burn bush",
      "maritime law",
      "i sunk the yacht",
@@ -31,53 +27,65 @@ class Game {
    ];
   }
 
+// class method that starts the game
+  startGame(){
+    const pickedPhrase = this.getRandomPhrase();
+    thisPhrase = new Phrase(pickedPhrase);
+    thisPhrase.addPhraseToDisplay();
+  }
+
+// choose a phrase at random
   getRandomPhrase(){
     let ix = Math.floor(Math.random() * this.phrases.length);
     return this.phrases[ix];
   }
 
-
-
-  startGame(){
-    const pickedPhrase = this.getRandomPhrase();
-    const thisPhrase = new Phrase(pickedPhrase);
-    thisPhrase.addPhraseToDisplay();
-  }
-
-
+// check if the user has guessed the entire phrase
   checkForWin(){
     const letters = document.getElementById('phrase').firstElementChild.children;
+    let win = true;
     for(let i = 0; i < letters.length; i++){
-      if(letters[i].classList.contains('hide letter')){
-        return false;
-      }
+        if(letters[i].classList.contains('letter')){
+            if(letters[i].classList.contains('hide')){
+                win = false;
+                return win;
+            }
+        }
     }
-    return true;
+    return this.gameOver(win);
   }
 
+// the following method checks if the chosen letter is in the phrase,
+// and removes a life if it's not
   handleInteraction(clickedLetter){
-    if(this.phrase.checkLetter(clickedLetter)){
-        this.phrase.showMatchedLetter(clickedLetter);
-        this.phrase.checkForWin();
+    if(thisPhrase.checkLetter(clickedLetter)){
+        thisPhrase.showMatchedLetter(clickedLetter);
+        this.checkForWin();
     } else {
         this.removeLife();
     }
-
   }
 
+// this method removes a life (increases the # of missed attempts
+// and removes a heart at the bottom of the virtual keyboard)
   removeLife(){
-    ++this.missed;
-    const ol = document.getElementById('scoreboard').firstElementChild;
-    ol.removeChild(ol.lastChild);
-    //remove last child?
-    if(ul.hasChildNodes() === false) {
-      this.gameOver();
+    this.missed = this.missed + 1;
+    if(this.missed === 5) {
+      this.gameOver(false);
     }
+    const ol = document.getElementById('scoreboard').firstElementChild;
+    ol.removeChild(ol.firstElementChild);
   }
-/*
-  gameOver(){
 
+// this method displays the game over message
+  gameOver(win){
+    let message = "";
+    if(win === false || this.missed === 5){
+        message = "You lose!";
+    } else if (win === true) {
+        message = "You win!";
+    }
+    document.getElementById('game-over-message').innerText = message;
+    document.getElementById('overlay').style.display = '';
   }
-  */
-
 }
