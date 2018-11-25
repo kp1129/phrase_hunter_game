@@ -3,6 +3,7 @@ class Phrase {
     this.phrase = phrase;
   }
 
+// class method that displays the chosen phrase
   addPhraseToDisplay() {
     let phraseToDisplay = ``;
     let phrase = this.phrase;
@@ -20,17 +21,18 @@ class Phrase {
     ul.innerHTML = phraseToDisplay;
   }
 
+// class method that displays matched letters
   showMatchedLetter(letter){
     const lis = document.getElementById('phrase').firstElementChild.children;
     for(let i = 0; i < lis.length; i++){
       if(lis[i].innerText === letter){
-        //what's with 'hide'? it's not in css
         lis[i].classList.remove('hide');
         lis[i].classList.add('show');
       }
     }
   }
 
+// class method that checks if a letter is in the phrase
   checkLetter(letter){
     if(this.phrase.indexOf(letter) > -1){
       return true;
