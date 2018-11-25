@@ -38,5 +38,4 @@ class Phrase {
       return false;
     }
   }
-
 }
